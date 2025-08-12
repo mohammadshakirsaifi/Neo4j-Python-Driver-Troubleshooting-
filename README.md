@@ -22,6 +22,11 @@
 
 ## ✅ Resolution Options
 
+### 1. Confirm Python SSL root certificates are accessible
+Run this snippet:
+
+<img width="683" height="152" alt="image" src="https://github.com/user-attachments/assets/73eb3ecf-df6c-430e-aaf7-84063c862759" />
+
 ### 🔧 Option 1: Copy `certifi` CA file to Python’s default cert location
 1. Locate the certifi CA file (usually here):
  <img width="1229" height="67" alt="image" src="https://github.com/user-attachments/assets/696e7df3-7182-403f-a72c-f8a6c727402a" />
@@ -88,12 +93,45 @@ Run this to print the exact TLS error:
 <img width="675" height="517" alt="image" src="https://github.com/user-attachments/assets/67f9ef69-a361-4408-b0e4-b1781dd86862" />
 
 
+
+
+
+
+### ✅ Final Working Setup
+URI used: bolt://f5d5c5a2.databases.neo4j.io:7687
+Encryption: Enabled manually via encrypted=True
+TLS Certificate Validation: Handled by passing ssl_context = ssl.create_default_context(cafile=certifi.where())
+Driver version: Neo4j Python driver v5.28.2
+
+### 💡 Why this works
+The neo4j+s:// and bolt+s:// schemes in newer versions of the Neo4j driver don’t allow manual SSL configuration — they assume full automation. But using bolt:// gives you full control to:
+
+Choose your cert store (certifi)
+Inspect or disable SSL (for debugging)
+Work around OS-level trust issues
+
+### ✅ You're now securely connected to Neo4j Aura with full SSL verification — no fallback, no insecure modes.
+Let me know if you want:
+To turn this into a reusable connection class
+Add automatic fallback from secure to +ssc:// if needed
+Deploy this as part of a larger app (e.g., with LangChain or FastAPI)
+
 ### ✅ Recommendation
+
 Always use neo4j+s:// for secure, verified TLS connections (especially with Neo4j Aura)
-
 Ensure your Python environment trusts the correct root CAs
-
 Avoid disabling SSL certificate checks (neo4j+ssc://) in production
 
 1. Locate the `certifi` CA file (usually here):
+
+   ### 🔐 Recommendation (Security Tip)
+Avoid hardcoding passwords directly in your scripts. Instead, use:
+
+<img width="375" height="95" alt="image" src="https://github.com/user-attachments/assets/7ff489f5-60bc-479c-8949-fde90823c93a" />
+
+And set the environment variable:
+
+<img width="483" height="59" alt="image" src="https://github.com/user-attachments/assets/386d6cfe-4d8e-458f-a48a-aa915f3bcf36" />
+
+
 
