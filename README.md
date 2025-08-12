@@ -23,11 +23,11 @@
 ## ✅ Resolution Options
 
 ### 🔧 Option 1: Copy `certifi` CA file to Python’s default cert location
-C:\Users<YourUsername>\AppData\Local\Programs\Python\PythonXXX\Lib\site-packages\certifi\cacert.pem
+1. Locate the certifi CA file (usually here):
+ <img width="1229" height="67" alt="image" src="https://github.com/user-attachments/assets/696e7df3-7182-403f-a72c-f8a6c727402a" />
 
 2. Copy it to this location:
-
-C:\Program Files\Common Files\SSL\cert.pem
+<img width="415" height="50" alt="image" src="https://github.com/user-attachments/assets/602481af-2f6c-4462-8c28-c6d589326d95" />
 
 3. If the folder doesn’t exist, create it.
 
@@ -42,51 +42,18 @@ C:\Program Files\Common Files\SSL\cert.pem
 $env:SSL_CERT_FILE = "C:\Path\To\Python\Lib\site-packages\certifi\cacert.pem"
 python your_script.py
 #### ✅ Permanent Setup:
-1. Open System Properties > Environment Variables
-2. Under User variables, click New
-3. Set:
-
-### Name: SSL_CERT_FILE
-Value: Full path to cacert.pem from certifi (e.g., C:\Path\To\Python\Lib\site-packages\certifi\cacert.pem)
-
-4. Click OK and restart any terminal/editor sessions.
+<img width="457" height="170" alt="image" src="https://github.com/user-attachments/assets/15f02263-f217-4b33-9eae-e2f10c8bd7d2" />
 
 #### ✅ Final Working Code (No manual SSL config)
-from neo4j import GraphDatabase
-
-uri = "neo4j+s://f5d5c5a2.databases.neo4j.io"
-user = "neo4j"
-password = "your_password_here"
-
-driver = GraphDatabase.driver(uri, auth=(user, password))
-with driver.session(database="neo4j") as session:
-    result = session.run("RETURN 'Connected to Neo4j!' AS message")
-    print(result.single()["message"])
-driver.close()
+<img width="637" height="317" alt="image" src="https://github.com/user-attachments/assets/820b0f8a-c6a0-4fa9-9060-0a1350e4a2bf" />
 
 ### ✅ Alternative: Use bolt:// with manual SSL context
-import ssl
-import certifi
-from neo4j import GraphDatabase
+<img width="874" height="426" alt="image" src="https://github.com/user-attachments/assets/12bcc3b8-66a1-4989-a4be-37186153be0a" />
 
-uri = "bolt://f5d5c5a2.databases.neo4j.io:7687"
-user = "neo4j"
-password = "your_password_here"
-
-ssl_context = ssl.create_default_context(cafile=certifi.where())
-
-driver = GraphDatabase.driver(uri, auth=(user, password), encrypted=True, ssl_context=ssl_context)
-with driver.session(database="neo4j") as session:
-    result = session.run("RETURN 'Connected to Neo4j!' AS message")
-    print(result.single()["message"])
-driver.close()
 ### 🧪 Bonus: Diagnostic Script
 Use this to check what certs your Python is using:
-import ssl
-import certifi
+<img width="773" height="159" alt="image" src="https://github.com/user-attachments/assets/9c4f08e5-3974-4f7c-bb1e-abcf0b2bc5b7" />
 
-print("Certifi CA Path:", certifi.where())
-print("Python Default SSL CA Path:", ssl.get_default_verify_paths().openssl_cafile)
 ### ✅ Recommendation
 Always use neo4j+s:// for secure, verified TLS connections (especially with Neo4j Aura)
 
