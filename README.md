@@ -66,7 +66,7 @@ with driver.session(database="neo4j") as session:
     print(result.single()["message"])
 driver.close()
 
-✅ Alternative: Use bolt:// with manual SSL context
+## ✅ Alternative: Use bolt:// with manual SSL context
 import ssl
 import certifi
 from neo4j import GraphDatabase
@@ -82,14 +82,14 @@ with driver.session(database="neo4j") as session:
     result = session.run("RETURN 'Connected to Neo4j!' AS message")
     print(result.single()["message"])
 driver.close()
-🧪 Bonus: Diagnostic Script
+## 🧪 Bonus: Diagnostic Script
 Use this to check what certs your Python is using:
 import ssl
 import certifi
 
 print("Certifi CA Path:", certifi.where())
 print("Python Default SSL CA Path:", ssl.get_default_verify_paths().openssl_cafile)
-✅ Recommendation
+## ✅ Recommendation
 Always use neo4j+s:// for secure, verified TLS connections (especially with Neo4j Aura)
 
 Ensure your Python environment trusts the correct root CAs
